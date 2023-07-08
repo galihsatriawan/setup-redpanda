@@ -1,4 +1,10 @@
 version: '3.7'
+name: redpanda-owl-shop
+networks:
+  redpanda_network:
+    driver: bridge
+volumes:
+  redpanda: null
 services:
   redpanda:
     image: docker.redpanda.com/redpandadata/redpanda:v23.1.13
@@ -36,7 +42,7 @@ services:
       retries: 5
       start_period: 5s
   console:
-    image: docker.redpanda.com/redpandadata/console:latest
+    image: docker.redpanda.com/redpandadata/console:v2.2.4
     entrypoint: /bin/sh
     command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
     environment:
@@ -73,14 +79,13 @@ services:
       - redpanda_network
     depends_on:
       - redpanda
-  
   connect:
     image: docker.redpanda.com/redpandadata/connectors:latest
     hostname: connect
     container_name: connect
     networks:
       - redpanda_network
-    #platform: 'linux/amd64'
+    # platform: 'linux/amd64'
     depends_on:
       - redpanda
     ports:
@@ -103,8 +108,3 @@ services:
       CONNECT_GC_LOG_ENABLED: "false"
       CONNECT_HEAP_OPTS: -Xms512M -Xmx512M
       CONNECT_LOG_LEVEL: info
-networks:
-  redpanda_network:
-    driver: bridge
-volumes:
-  redpanda: null
