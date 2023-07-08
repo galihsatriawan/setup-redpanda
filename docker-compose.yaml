@@ -1,5 +1,5 @@
 version: '3.7'
-name: redpanda-owl-shop
+name: our-redpanda
 networks:
   redpanda_network:
     driver: bridge
@@ -57,17 +57,6 @@ services:
           adminApi:
             enabled: true
             urls: ["http://redpanda:9644"]
-        login:
-          enabled: true
-          jwtSecret: change-this-to-something-secret
-          useSecureCookies: false
-          plain:
-            enabled: true
-            credentials:
-            - username: "jane"
-              password: "some-other-secret-password"
-            - username: "john"
-              password: "some-secret-password"
         connect:
           enabled: true
           clusters:
